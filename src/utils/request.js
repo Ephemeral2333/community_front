@@ -16,19 +16,12 @@ const service = axios.create({
 // 2.请求拦截器request interceptor
 service.interceptors.request.use(
     config => {
-        // 发请求前做的一些处理，数据转化，配置请求头，设置token,设置loading等，根据需求去添加
-        // 注意使用token的时候需要引入cookie方法或者用本地localStorage等方法，推荐js-cookie
-        if (store.getters.token) {
-            // config.params = {'token': token}    // 如果要求携带在参数中
-            // config.headers.token = token;       // 如果要求携带在请求头中
-            // bearer：w3c规范
+        if (getToken()) {
             config.headers['Authorization'] = getToken();
         }
         return config
     },
     error => {
-        // do something with request error
-        // console.log(error) // for debug
         return Promise.reject(error)
     }
 )
@@ -56,7 +49,7 @@ service.interceptors.response.use(
             } else { // 其他异常直接提示
                 Message({
                     showClose: true,
-                    message: '⚠' + res.message || 'Error',
+                    message: res.message || 'Error',
                     type: 'error',
                     duration: 3 * 1000
                 })
