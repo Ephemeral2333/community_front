@@ -37,7 +37,7 @@
 
                         <el-form-item label="邮箱" prop="email">
                             <el-row>
-                                <el-input v-model="ruleForm.email" autocomplete="off" style="width: 360px"/>
+                                <el-input v-model="ruleForm.email" autocomplete="off" style="width: 230px"/>
                                 &nbsp;
                                 <el-button v-if="isShow" type="primary" @click="sendCode()"
                                 class="sendCode">发送验证码</el-button>

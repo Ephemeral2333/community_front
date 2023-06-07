@@ -9,6 +9,12 @@ import 'buefy/dist/buefy.css'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import '@/assets/app.css';
+import '@/permission'
+import 'dayjs/locale/zh-cn'
+import relativeTime from 'dayjs/plugin/relativeTime'
+const dayjs = require('dayjs');
+
+dayjs.extend(relativeTime)
 
 Vue.use(Buefy)
 Vue.use(ElementUI)

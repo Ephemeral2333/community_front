@@ -22,3 +22,17 @@ export function login(userDTO) {
         data: userDTO
     })
 }
+
+export function getUserInfo() {
+    return request({
+        url: '/admin/system/index/info',
+        method: 'get'
+    })
+}
+
+export function logout() {
+    return request({
+        url: '/admin/system/index/logout',
+        method: 'post'
+    })
+}

@@ -3,6 +3,12 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
+// 解决重复点击相同路由报错
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
+
 const routes = [
   {
     path: '/',
@@ -24,17 +30,18 @@ const routes = [
     meta: { title: "登录" },
   },
   {
+    name: "post-create",
+    path: "/post/create",
+    component: () => import("@/views/post/Create"),
+    meta: { title: "发帖", requireAuth: true },
+  },
+  {
     path: '/404',
     name: '404',
     component: ()=>import('@/views/error/404'),
     meta: {
-      title: '404 Not Found',
-      hidden: true
+      title: '404 Not Found'
     }
-  },
-  {
-    path: '*',
-    redirect: '/404'
   }
 ]
 

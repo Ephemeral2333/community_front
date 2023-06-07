@@ -16,7 +16,7 @@ const service = axios.create({
 // 2.请求拦截器request interceptor
 service.interceptors.request.use(
     config => {
-        if (getToken()) {
+        if (store.getters.token) {
             config.headers['Authorization'] = getToken();
         }
         return config
