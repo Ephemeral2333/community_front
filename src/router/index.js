@@ -36,6 +36,11 @@ const routes = [
     meta: { title: "发帖", requireAuth: true },
   },
   {
+    name: "post-detail",
+    path: "/post/:id",
+    component: () => import("@/views/post/Detail"),
+  },
+  {
     path: '/404',
     name: '404',
     component: ()=>import('@/views/error/404'),

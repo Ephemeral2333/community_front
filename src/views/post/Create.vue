@@ -53,9 +53,10 @@
 </template>
 
 <script>
-import { post } from '@/api/post'
+import { savePost } from '@/api/post'
 import Vditor from 'vditor'
 import 'vditor/dist/index.css'
+import {MessageBox} from "element-ui";
 
 export default {
     name: 'TopicPost',
@@ -84,7 +85,7 @@ export default {
     mounted() {
         this.contentEditor = new Vditor('vditor', {
             height: 500,
-            placeholder: '此处为话题内容……',
+            placeholder: '此处为帖子内容……',
             theme: 'classic',
             counter: {
                 enable: true,
@@ -125,7 +126,7 @@ export default {
                         return false
                     }
                     this.ruleForm.content = this.contentEditor.getValue()
-                    post(this.ruleForm).then((response) => {
+                    savePost(this.ruleForm).then((response) => {
                         const { data } = response
                         setTimeout(() => {
                             this.$router.push({
@@ -144,6 +145,24 @@ export default {
             this.$refs[formName].resetFields()
             this.contentEditor.setValue('')
             this.ruleForm.tags = ''
+        },
+        judgeOnline() {
+            if (this.$store.getters.token === '' || this.$store.getters.token == null) {
+                // 提醒用户登录
+                MessageBox.confirm('您还未登录，是否前往登录页面？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.$router.push({
+                        name: 'login'
+                    })
+                }).catch(() => {
+                    this.$router.push({
+                        name: 'home'
+                    })
+                })
+            }
         }
     }
 }

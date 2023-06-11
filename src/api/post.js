@@ -20,3 +20,18 @@ export function savePost(topic) {
         data: topic
     })
 }
+
+// 获取帖子详情
+export function getTopic(id) {
+    return request({
+        url: `/front/post/${id}`,
+        method: 'get'
+    })
+}
+
+export function getRecommendTopics() {
+    return request({
+        url: `/front/post/recommend`,
+        method: 'get'
+    })
+}

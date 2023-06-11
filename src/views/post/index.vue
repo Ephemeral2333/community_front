@@ -78,6 +78,12 @@
                                             发布于:{{ dayjs(item.createTime).format("YYYY/MM/DD") }}
                                         </span>
                                     </div>
+                                    <span v-if="item.view >= 5000" type="is-info is-light mr-1" style="color: red">
+                                        {{ "#" + '热门' }}
+                                    </span>
+                                    <span v-if="item.favor >= 500" type="is-info is-light mr-1" style="color: gold">
+                                        {{ "#" + '多人点赞' }}
+                                    </span>
                                     <span
                                         v-for="(tag, index) in item.tags"
                                         :key="index"
@@ -144,7 +150,7 @@ export default {
             })
         },
         // 处理分页
-        handleChange(page) {
+        handleChange() {
             getPostList(this.page.current, this.page.size, this.activeName).then((response) => {
                 const {data} = response
                 this.page.current = data.currentPage

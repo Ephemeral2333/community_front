@@ -4,7 +4,8 @@ import getPageTitle from '@/utils/get-page-title'
 
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css'
-import {getToken} from "@/utils/auth"; // progress bar style
+import {getToken} from "@/utils/auth";
+import {MessageBox} from "element-ui"; // progress bar style
 
 NProgress.configure({showSpinner: false}) // NProgress Configuration
 
@@ -27,12 +28,20 @@ router.beforeEach(async (to, from, next) => {
             await store.dispatch('user/getInfo')
             next()
         }
-    } else if (!to.meta.requireAuth)
-    {
+    } else if (!to.meta.requireAuth) {
         next()
-    }
-    else {
-        next('/login')
+    } else {
+        // 提醒用户登录,若选择取消，则停留在当前页面
+        MessageBox.confirm('您还未登录，是否登录？', '提示', {
+            confirmButtonText: '登录',
+            cancelButtonText: '取消',
+            type: 'warning'
+        }).then(() => {
+            next({path: '/login'})
+            NProgress.done()
+        }).catch(() => {
+            next('/')
+        })
     }
 })
 
