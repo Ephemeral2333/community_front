@@ -38,7 +38,7 @@
                                         :key="index"
                                         class="tag is-hidden-mobile is-success is-light mr-1"
                                     >
-                                        <router-link :to="{ name: 'tag', params: { name: tag.name } }">
+                                        <router-link :to="{ name: 'tag', params: { name: tag.id } }">
                                           {{ "#" + tag.name }}
                                         </router-link>
                                     </span>
@@ -89,7 +89,7 @@
                                         :key="index"
                                         class="tag is-hidden-mobile is-success is-light mr-1"
                                     >
-                                        <router-link :to="{ name: 'tag', params: { name: tag.name } }">
+                                        <router-link :to="{ name: 'tag', params: { name: tag.id } }">
                                           {{ "#" + tag.name }}
                                         </router-link>
                                     </span>

@@ -28,7 +28,7 @@
                                 <router-link
                                     v-for="(tag, index) in tags"
                                     :key="index"
-                                    :to="{ name: 'tag', params: { name: tag.name } }"
+                                    :to="{ name: 'tag', params: { name: tag.id } }"
                                 >
                                     <b-tag type="is-info is-light mr-1">
                                         {{ "#" + tag.name }}
