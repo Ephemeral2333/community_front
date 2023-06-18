@@ -50,6 +50,7 @@ export default {
             try {
                 let postData = {}
                 console.log(this.commentText)
+                postData['id'] = null
                 postData['content'] = this.commentText
                 postData['topicId'] = this.slug
                 // 调用api，然后根据返回结果进行相应的操作
@@ -62,6 +63,7 @@ export default {
                 this.$emit('loadComments', this.slug)
                 this.$message.success('留言成功')
                 this.commentText = ''
+                window.location.reload()
             } catch (e) {
                 this.$buefy.toast.open({
                     message: `Cannot comment this story. ${e}`,

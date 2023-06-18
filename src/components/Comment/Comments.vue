@@ -8,6 +8,7 @@
             v-for="comment in comments"
             :key="`comment-${comment.id}`"
             :comment="comment"
+            :topicId="slug"
         />
     </section>
 </template>

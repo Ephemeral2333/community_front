@@ -1,7 +1,7 @@
 <template>
     <article class="media">
         <figure class="media-left image is-48x48">
-            <img :src="`https://cn.gravatar.com/avatar/${comment.userId}?s=164&d=monsterid`">
+            <img :src="comment.avatar" class="is-rounded">
         </figure>
         <div class="media-content">
             <div class="content">
@@ -39,7 +39,7 @@
                     >
                     </el-input>
                     <br><br>
-                    <el-button type="primary" size="small" @click="resetForm(comment.id)">发送</el-button>
+                    <el-button type="primary" size="small" @click="reply()">发送</el-button>
                     &nbsp;
                     <el-button type="primary" size="small" @click="resetForm(comment.id)">取消</el-button>
                 </div>
@@ -61,6 +61,7 @@ import {mapGetters} from 'vuex'
 import LvCommentsForm from "@/components/Comment/CommentsForm.vue";
 import VueStar from 'vue-star'
 import {favorComment} from "@/api/comments";
+import {removeComment, replyComments} from "@/api/post";
 
 export default {
     name: 'LvCommentsItem',
@@ -70,6 +71,9 @@ export default {
             commentText: ''
         }
     },
+    mounted() {
+      console.log(this.comment.content + " " + this.comment.favorite)
+    },
     computed: {
         ...mapGetters([
             'token', 'user'
@@ -78,6 +82,14 @@ export default {
     props: {
         comment: {
             type: Object,
+            required: true
+        },
+        comments: {
+            type: Array,
+            required: true
+        },
+        topicId: {
+            type: String,
             required: true
         }
     },
@@ -90,9 +102,32 @@ export default {
             // id为comments-form+comment.id的div隐藏
             document.getElementById('comments-form' + id).hidden = true
         },
-        removeComment(id) {
+        async reply() {
             // 调用api，然后根据返回结果进行相应的操作
-            this.$message.success('删除成功')
+            let postData = {}
+            postData['id'] = this.comment.id
+            postData['content'] = this.commentText
+            postData['topicId'] = this.topicId
+            await replyComments(postData)
+            this.$message.success('回复成功')
+            // 重新加载页面
+            window.location.reload()
+        },
+        removeComment(id) {
+            // 询问是否删除
+            this.$confirm('此操作将永久删除该评论, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(async () => {
+                // 调用api，然后根据返回结果进行相应的操作
+                await removeComment(id)
+                this.$message.success('删除成功')
+                // 重新加载页面
+                window.location.reload()
+            }).catch(() => {
+                this.$message.info('已取消删除')
+            })
         },
         async like(id) {
             // 如果是点赞，就点赞数加一，然后将comment.favorite设置为true

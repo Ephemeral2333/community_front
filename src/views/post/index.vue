@@ -7,7 +7,7 @@
                         <article v-for="(item, index) in articleList" :key="index" class="media">
                             <div class="media-left">
                                 <figure class="image is-48x48">
-                                    <img :src="`https://cn.gravatar.com/avatar/${item.author.id}?s=164&d=monsterid`"
+                                    <img :src="item.author.headUrl"
                                          style="border-radius: 5px;">
                                 </figure>
                             </div>
@@ -52,7 +52,7 @@
                         <article v-for="(item, index) in articleList" :key="index" class="media">
                             <div class="media-left">
                                 <figure class="image is-48x48">
-                                    <img :src="`https://cn.gravatar.com/avatar/${item.author.id}?s=164&d=monsterid`"
+                                    <img :src="item.author.headUrl"
                                          style="border-radius: 5px;">
                                 </figure>
                             </div>

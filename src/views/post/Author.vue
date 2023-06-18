@@ -10,6 +10,9 @@
                         {{ user.nickname }} <span class="is-size-7 has-text-grey">{{ '@' + user.username }}</span>
                     </router-link>
                 </p>
+                <div class="image">
+                    <img :src="user.headUrl" alt="avatar" class="is-rounded" style="width: 128px; height: 128px; margin-left: 45px">
+                </div>
                 <div class="columns is-mobile">
                     <div class="column is-half">
                         <code>{{ user.topicCount }}</code>

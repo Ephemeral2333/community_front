@@ -50,3 +50,18 @@ export function handleDelete(id) {
         method: 'delete'
     })
 }
+
+export function replyComments(date) {
+    return request({
+        url: `/admin/comments/reply`,
+        method: 'post',
+        data: date
+    })
+}
+
+export function removeComment(id) {
+    return request({
+        url: `/admin/comments/delete/${id}`,
+        method: 'delete'
+    })
+}
