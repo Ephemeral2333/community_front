@@ -41,6 +41,11 @@ const routes = [
     component: () => import("@/views/post/Detail"),
   },
   {
+    name: "topic-edit",
+    path: "/topic/edit",
+    component: () => import("@/views/post/Edit"),
+  },
+  {
     path: '/404',
     name: '404',
     component: ()=>import('@/views/error/404'),

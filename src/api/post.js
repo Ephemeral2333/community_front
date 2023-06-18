@@ -21,6 +21,14 @@ export function savePost(topic) {
     })
 }
 
+export function updatePost(topic) {
+    return request({
+        url: '/front/post/update',
+        method: 'put',
+        data: topic
+    })
+}
+
 // 获取帖子详情
 export function getTopic(id) {
     return request({
@@ -33,5 +41,12 @@ export function getRecommendTopics() {
     return request({
         url: `/front/post/recommend`,
         method: 'get'
+    })
+}
+
+export function handleDelete(id) {
+    return request({
+        url: `/front/post/delete/${id}`,
+        method: 'delete'
     })
 }

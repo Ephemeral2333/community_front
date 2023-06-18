@@ -12,14 +12,14 @@
                     <p class="is-size-5 has-text-weight-bold">{{ topic.title }}</p>
                     <div class="has-text-grey is-size-7 mt-3">
                         <span>{{ dayjs(topic.createTime).format('YYYY/MM/DD HH:mm:ss') }}</span>
-                        <el-divider direction="vertical" />
+                        <el-divider direction="vertical"/>
                         <span>发布者：{{ topicUser.nickname }}</span>
-                        <el-divider direction="vertical" />
+                        <el-divider direction="vertical"/>
                         <span>浏览：{{ topic.view }}</span>
                     </div>
                 </div>
 
-                <div id="preview" />
+                <div id="preview"/>
 
                 <nav class="level has-text-grey is-size-7 mt-6">
                     <div class="level-left">
@@ -35,7 +35,7 @@
                                     </b-tag>
                                 </router-link>
                                 <router-link v-if="topic.view >= 500"
-                                    :to="{ name: 'tag', params: { name: '热门' } }"
+                                             :to="{ name: 'tag', params: { name: '热门' } }"
                                 >
                                 </router-link>
                             </b-taglist>
@@ -60,6 +60,8 @@
                     </div>
                 </nav>
             </el-card>
+
+            <lv-comments :slug="topic.id" />
         </div>
 
         <div class="column">
@@ -75,22 +77,28 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import {getTopic} from "@/api/post";
+import {mapGetters} from 'vuex'
+import {getTopic, handleDelete} from "@/api/post";
 import Vditor from "vditor";
+import Comments from "@/components/Comment/Comments.vue";
 import dayjs from "dayjs";
 import 'vditor/dist/index.css'
 import Author from "@/views/post/Author.vue";
 import Recommend from "@/views/post/Recommend.vue";
+import emojione from 'emojione'
+import LvComments from "@/components/Comment/Comments.vue";
+
 export default {
     name: 'TopicDetail',
     components: {
+        LvComments,
         Author,
-        Recommend
+        Recommend,
+        Comments
     },
     computed: {
         ...mapGetters([
-            'token','user'
+            'token', 'user'
         ])
     },
     data() {
@@ -113,23 +121,47 @@ export default {
         dayjs,
         renderMarkdown(md) {
             Vditor.preview(document.getElementById('preview'), md, {
-                hljs: { style: 'github' }
+                hljs: {style: 'github'}
             })
         },
         // 初始化
         async fetchTopic() {
             getTopic(this.$route.params.id).then(response => {
-                const { data } = response
+                const {data} = response
                 document.title = data.title
                 this.topic.title = data.title
                 this.topic.content = data.content
                 this.topic.view = data.view
                 this.tags = data.tags
                 this.topicUser = data.author
-                this.renderMarkdown(this.topic.content)
+                // this.renderMarkdown(this.topic.content)
+                // 将content渲染成html，放到preview中,不用vditor
+                // document.getElementById('preview').innerHTML = this.topic.content
+                var myHtml = document.getElementById('preview');
+                myHtml.innerHTML = emojione.toImage(this.topic.content);
                 this.flag = true
             })
         },
+        handleDelete(id) {
+            this.$confirm('此操作将永久删除该文章, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                handleDelete(id).then(() => {
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    })
+                    this.$router.push({name: 'home'})
+                })
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                })
+            })
+        }
     }
 }
 </script>

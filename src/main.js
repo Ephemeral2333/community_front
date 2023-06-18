@@ -12,12 +12,19 @@ import '@/assets/app.css';
 import '@/permission'
 import 'dayjs/locale/zh-cn'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import {format} from "date-fns";
 const dayjs = require('dayjs');
-
+import animated from 'animate.css'
+import 'font-awesome/css/font-awesome.min.css'
+Vue.use(animated)
 dayjs.extend(relativeTime)
 
 Vue.use(Buefy)
 Vue.use(ElementUI)
+
+Vue.filter('date', (date) => {
+  return format(new Date(date), 'yyyy-MM-dd HH:mm:ss')
+})
 
 Vue.config.productionTip = false
 

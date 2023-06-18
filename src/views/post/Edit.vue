@@ -9,7 +9,7 @@
                     slot="header"
                     class="clearfix"
                 >
-                    <span><i class="fa fa fa-book"> 发布帖子 </i></span>
+                    <span><i class="fa fa fa-book"> 修改文章 </i></span>
                 </div>
                 <div>
                     <el-form
@@ -60,7 +60,7 @@
                             <el-button
                                 type="primary"
                                 @click="submitForm('ruleForm')"
-                            >立即创建
+                            >立即修改
                             </el-button>
                             <el-button @click="resetForm('ruleForm')">重置</el-button>
                         </el-form-item>
@@ -72,13 +72,12 @@
 </template>
 
 <script>
-import {savePost} from '@/api/post'
+import {getTopic, updatePost} from '@/api/post'
 import 'vditor/dist/index.css'
-import {MessageBox} from "element-ui";
 import {Editor, Toolbar} from "@wangeditor/editor-for-vue";
 
 export default {
-    name: 'TopicPost',
+    name: 'topic-edit',
     components: {
         Editor, Toolbar
     },
@@ -95,7 +94,7 @@ export default {
                 MENU_CONF: {},
             },
             ruleForm: {
-                id: null,
+                id: '', // ID
                 title: '', // 标题
                 tags: [], // 标签
                 content: '' // 内容
@@ -114,7 +113,7 @@ export default {
         }
     },
     mounted() {
-
+        this.fetchTopic();
     },
     beforeDestroy() {
         const editor = this.editor;
@@ -141,7 +140,7 @@ export default {
                         return false
                     }
                     this.ruleForm.content = this.editor.getHtml()
-                    savePost(this.ruleForm).then((response) => {
+                    updatePost(this.ruleForm).then((response) => {
                         const { data } = response
                         setTimeout(() => {
                             this.$router.push({
@@ -160,7 +159,15 @@ export default {
             this.$refs[formName].resetFields();
             this.html = '';
             this.ruleForm.tags = [];
-        }
+        },
+        fetchTopic() {
+            getTopic(this.$route.params.id).then((value) => {
+                this.ruleForm.id = this.$route.params.id;
+                this.ruleForm.title = value.data.title;
+                this.ruleForm.tags = value.data.tags.map(tag => tag.name);
+                this.html = value.data.content;
+            });
+        },
     }
 }
 </script>
