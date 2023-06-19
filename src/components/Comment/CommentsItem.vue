@@ -72,7 +72,7 @@ export default {
         }
     },
     mounted() {
-      console.log(this.comment.content + " " + this.comment.favorite)
+        console.log(this.comment.content + " " + this.comment.favorite)
     },
     computed: {
         ...mapGetters([
@@ -95,8 +95,13 @@ export default {
     },
     methods: {
         replyComment(id) {
-            // id为comments-form+comment.id的div取消隐藏
-            document.getElementById('comments-form' + id).hidden = false
+            if (this.token === null || this.token === '') {
+                console.log(this.token)
+                this.$message.warning('要先登录才能回复哦')
+            } else {
+                // id为comments-form+comment.id的div取消隐藏
+                document.getElementById('comments-form' + id).hidden = false
+            }
         },
         resetForm(id) {
             // id为comments-form+comment.id的div隐藏

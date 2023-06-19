@@ -19,7 +19,7 @@
                     </div>
                 </div>
 
-                <div id="preview"/>
+                <div id="preview" />
 
                 <nav class="level has-text-grey is-size-7 mt-6">
                     <div class="level-left">
@@ -85,7 +85,6 @@ import dayjs from "dayjs";
 import 'vditor/dist/index.css'
 import Author from "@/views/post/Author.vue";
 import Recommend from "@/views/post/Recommend.vue";
-import emojione from 'emojione'
 import LvComments from "@/components/Comment/Comments.vue";
 
 export default {
@@ -121,7 +120,7 @@ export default {
         dayjs,
         renderMarkdown(md) {
             Vditor.preview(document.getElementById('preview'), md, {
-                hljs: {style: 'github'}
+                hljs: { style: 'github' }
             })
         },
         // 初始化
@@ -134,11 +133,7 @@ export default {
                 this.topic.view = data.view
                 this.tags = data.tags
                 this.topicUser = data.author
-                // this.renderMarkdown(this.topic.content)
-                // 将content渲染成html，放到preview中,不用vditor
-                // document.getElementById('preview').innerHTML = this.topic.content
-                var myHtml = document.getElementById('preview');
-                myHtml.innerHTML = emojione.toImage(this.topic.content);
+                this.renderMarkdown(this.topic.content)
                 this.flag = true
             })
         },

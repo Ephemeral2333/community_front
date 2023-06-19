@@ -54,6 +54,22 @@ const routes = [
     }
   },
   {
+    name: 'search',
+    path: '/search',
+    component: ()=>import('@/views/Search'),
+    meta: {
+        title: '搜索'
+    }
+  },
+  {
+    name: 'user',
+    path: '/member/:username/home',
+    component: ()=>import('@/views/user/Profile'),
+    meta: {
+        title: '用户主页'
+    }
+  },
+  {
     path: '/404',
     name: '404',
     component: ()=>import('@/views/error/404'),

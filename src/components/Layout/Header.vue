@@ -80,7 +80,6 @@
                         </b-button>
                     </div>
                 </b-navbar-item>
-
                 <b-navbar-dropdown
                     v-else
                     :label="user.nickname"
@@ -93,8 +92,8 @@
                     </b-navbar-item>
                     <hr class="dropdown-divider">
                     <b-navbar-item
-                        tag="router-link"
-                        :to="{ path: `/member/${user.username}/setting` }"
+                        tag="a"
+                        @click="toBackend()"
                     >
                         ⚙ 设置中心
                     </b-navbar-item>
@@ -168,6 +167,10 @@ export default {
                 return false
             }
             this.$router.push({path: '/search?key=' + this.searchKey})
+        },
+        toBackend() {
+            // 跳转到localhost:8082
+            window.location.href = 'http://localhost:8848'
         }
     }
 }

@@ -25,27 +25,8 @@
                             />
                         </el-form-item>
 
-                        <!--Markdown-->
-                        <div style="border: 1px solid #ccc; margin-top: 10px">
-                            <!-- 工具栏 -->
-                            <Toolbar
-                                style="border-bottom: 1px solid #ccc"
-                                :editor="editor"
-                                :defaultConfig="toolbarConfig"
-                            />
-                            <!-- 编辑器 -->
-                            <Editor
-                                style="height: 400px; overflow-y: hidden"
-                                :defaultConfig="editorConfig"
-                                v-model="html"
-                                @onCreated="onCreated"
+                        <div id="vditor" />
 
-                            />
-                        </div>
-
-                        <div class="contain">
-
-                        </div>
 
                         <b-taginput
                             v-model="ruleForm.tags"
@@ -73,27 +54,16 @@
 
 <script>
 import {savePost} from '@/api/post'
+import Vditor from 'vditor'
 import 'vditor/dist/index.css'
-import {MessageBox} from "element-ui";
-import {Editor, Toolbar} from "@wangeditor/editor-for-vue";
-
 export default {
     name: 'TopicPost',
     components: {
-        Editor, Toolbar
+
     },
     data() {
         return {
-            html: '',
-            editor: null,
-            toolbarConfig: {
-                // toolbarKeys: [ /* 显示哪些菜单，如何排序、分组 */ ],
-                // excludeKeys: [ /* 隐藏哪些菜单 */ ],
-            },
-            editorConfig: {
-                placeholder: "请输入内容...",
-                MENU_CONF: {},
-            },
+            contentEditor: {},
             ruleForm: {
                 id: null,
                 title: '', // 标题
@@ -114,24 +84,62 @@ export default {
         }
     },
     mounted() {
+        this.contentEditor = new Vditor('vditor', {
+            height: 500,
+            placeholder: '此处为话题内容……',
+            theme: 'classic',
+            counter: {
+                enable: true,
+                type: 'markdown'
+            },
+            preview: {
+                delay: 0,
+                hljs: {
+                    style: 'monokai',
+                    lineNumber: true
+                }
+            },
+            tab: '\t',
+            typewriterMode: true,
+            toolbarConfig: {
+                pin: true
+            },
+            cache: {
+                enable: false
+            },
+            mode: 'ir',
+            //这里写上传图片或视频
+            upload: {
+                url: 'http://localhost:8080/front/file/upload',
+                linkToImgUrl: 'http://localhost:8080/front/file/upload',
+                multiple: true,
+                fieldName: 'file',
+                // 数据转换
+                format(files, responseText) {
+                    const res = JSON.parse(responseText);
+                    const name = files[0].name;
+                    const url = res.data;
+                    const result = JSON.stringify({
+                        code: 0,
+                        data: { errFiles: '', succMap: { [name]: url } },
+                    });
+                    return result;
+                },
+            },
 
+        })
     },
     beforeDestroy() {
-        const editor = this.editor;
-        if (editor == null) return;
-        editor.destroy(); // 组件销毁时，及时销毁 editor ，重要！！！
+
     },
     methods: {
-        onCreated(editor) {
-            this.editor = Object.seal(editor); // 【注意】一定要用 Object.seal() 否则会报错
-        },
         submitForm(formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
                     if (
-                        this.editor.getHtml().length === 1 ||
-                        this.editor.getHtml() == null ||
-                        this.editor.getHtml() === ''
+                        this.contentEditor.getValue().length === 1 ||
+                        this.contentEditor.getValue() == null ||
+                        this.contentEditor.getValue() === ''
                     ) {
                         alert('话题内容不可为空')
                         return false
@@ -140,7 +148,7 @@ export default {
                         alert('标签不可以为空')
                         return false
                     }
-                    this.ruleForm.content = this.editor.getHtml()
+                    this.ruleForm.content = this.contentEditor.getValue()
                     savePost(this.ruleForm).then((response) => {
                         const { data } = response
                         setTimeout(() => {
@@ -157,13 +165,15 @@ export default {
             })
         },
         resetForm(formName) {
-            this.$refs[formName].resetFields();
-            this.html = '';
-            this.ruleForm.tags = [];
+            this.$refs[formName].resetFields()
+            this.contentEditor.setValue('')
+            this.ruleForm.tags = ''
         }
     }
 }
 </script>
 
-<style src="@wangeditor/editor/dist/css/style.css"></style>
+<style>
+
+</style>
 
