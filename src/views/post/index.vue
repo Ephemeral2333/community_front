@@ -30,7 +30,7 @@
                                             {{ item.author.nickname }}
                                         </router-link>
                                         <span class="mr-1">
-                                            发布于:{{ dayjs(item.updateTime).format("YYYY/MM/DD") }}
+                                            发布于:{{ dayjs(item.updateTime).format("YYYY/MM/DD HH:mm:ss") }}
                                         </span>
                                     </div>
                                     <span

@@ -16,11 +16,6 @@ import {format} from "date-fns";
 const dayjs = require('dayjs');
 import animated from 'animate.css'
 import 'font-awesome/css/font-awesome.min.css'
-import VueQuillEditor from 'vue-quill-editor'
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
-Vue.use(VueQuillEditor)
 Vue.use(animated)
 dayjs.extend(relativeTime)
 

@@ -23,3 +23,23 @@ export function hasFollow(id) {
         method: 'get'
     })
 }
+
+export function getFollowList(page, size, username) {
+    return request({
+        url: '/front/follow/' + page + '/' + size,
+        method: 'get',
+        params: {
+            username: username
+        }
+    })
+}
+
+export function getFansList(page, size, username) {
+    return request({
+        url: '/front/fans/' + page + '/' + size,
+        method: 'get',
+        params: {
+            username: username
+        }
+    })
+}
