@@ -41,6 +41,11 @@ const routes = [
     component: () => import("@/views/post/Detail"),
   },
   {
+    path: "/tip/post",
+    name: "tip-post",
+    component: () => import("@/views/tip/Create"),
+  },
+  {
     name: "topic-edit",
     path: "/topic/edit",
     component: () => import("@/views/post/Edit"),
@@ -68,6 +73,11 @@ const routes = [
     meta: {
         title: '用户主页'
     }
+  },
+  {
+    // 未知路由重定向到404
+    path: '*',
+    redirect: '/404'
   },
   {
     path: '/404',

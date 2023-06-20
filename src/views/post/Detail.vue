@@ -13,7 +13,8 @@
                     <div class="has-text-grey is-size-7 mt-3">
                         <span>{{ dayjs(topic.createTime).format('YYYY/MM/DD HH:mm:ss') }}</span>
                         <el-divider direction="vertical"/>
-                        <span>发布者：{{ topicUser.nickname }}</span>
+                        <span v-if="!topic.anonymous">发布者：{{ topicUser.nickname }}</span>
+                        <span v-else>发布者：匿名</span>
                         <el-divider direction="vertical"/>
                         <span>浏览：{{ topic.view }}</span>
                     </div>
@@ -66,7 +67,7 @@
 
         <div class="column">
             <Author
-                v-if="flag"
+                v-if="flag && !topic.anonymous"
                 :user="topicUser"
             />
             <recommend
@@ -108,6 +109,7 @@ export default {
                 content: '',
                 id: this.$route.params.id,
                 view: 0,
+                anonymous: false
             },
             tags: [],
             topicUser: {}
@@ -131,6 +133,7 @@ export default {
                 this.topic.title = data.title
                 this.topic.content = data.content
                 this.topic.view = data.view
+                this.topic.anonymous = data.anonymous
                 this.tags = data.tags
                 this.topicUser = data.author
                 this.renderMarkdown(this.topic.content)

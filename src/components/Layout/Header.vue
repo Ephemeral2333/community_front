@@ -24,6 +24,13 @@
                 >
                     🌐 主页
                 </b-navbar-item>
+                <b-navbar-item
+                    v-if="token != null && token !== ''"
+                    tag="router-link"
+                    :to="{ path: '/tip/post' }"
+                >
+                    📚 每日一句投稿
+                </b-navbar-item>
             </template>
 
             <template slot="end">
@@ -119,7 +126,7 @@ export default {
     data() {
         return {
             logoUrl: require('@/assets/logo.png'),
-            doubaoImg: require('@/assets/image/doubao.png'),
+            doubaoImg: require('@/assets/image/img.png'),
             searchKey: '',
             darkMode: false
         }

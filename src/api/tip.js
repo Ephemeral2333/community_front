@@ -6,3 +6,11 @@ export function getTodayTip() {
         method: 'get'
     })
 }
+
+export function PostTip(data) {
+    return request({
+        url: '/tip/post',
+        method: 'post',
+        data
+    })
+}

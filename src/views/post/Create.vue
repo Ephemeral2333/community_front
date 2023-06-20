@@ -38,6 +38,15 @@
                         />
 
                         <el-form-item>
+                            是否匿名发送：
+                            <el-switch
+                                v-model="ruleForm.anonymous"
+                                active-text="匿名"
+                                inactive-text="实名"
+                            />
+                        </el-form-item>
+
+                        <el-form-item>
                             <el-button
                                 type="primary"
                                 @click="submitForm('ruleForm')"
@@ -68,7 +77,8 @@ export default {
                 id: null,
                 title: '', // 标题
                 tags: [], // 标签
-                content: '' // 内容
+                content: '', // 内容
+                anonymous: false, // 是否匿名
             },
             rules: {
                 title: [
