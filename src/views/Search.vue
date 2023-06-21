@@ -9,7 +9,9 @@
                 <article v-for="(item, index) in list" :key="index" class="media">
                     <div class="media-left">
                         <figure class="image is-48x48">
-                            <img :src="item.author.headUrl"
+                            <img v-if="!item.anonymous" :src="item.author.headUrl"
+                                 style="border-radius: 5px;">
+                            <img v-else src="https://img0.baidu.com/it/u=1758930662,2482245815&fm=253&fmt=auto&app=138&f=JPEG?w=501&h=500"
                                  style="border-radius: 5px;">
                         </figure>
                     </div>
@@ -26,14 +28,16 @@
                         <nav class="level has-text-grey is-mobile  is-size-7 mt-2">
                             <div class="level-left">
                                 <div class="level-left">
-                                    <router-link class="level-item"
+                                    <router-link v-if="!item.anonymous" class="level-item"
                                                  :to="{ path: `/member/${item.author.username}/home` }">
                                         {{ item.author.nickname }}
                                     </router-link>
-
+                                    <span v-else class="level-item">
+                                            匿名
+                                    </span>
                                     <span class="mr-1">
-                    发布于:{{ dayjs(item.createTime).format("YYYY/MM/DD") }}
-                  </span>
+                                        发布于:{{ dayjs(item.createTime).format("YYYY/MM/DD") }}
+                                    </span>
 
                                     <span
                                         v-for="(tag, index) in item.tags"

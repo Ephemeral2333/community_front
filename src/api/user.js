@@ -22,6 +22,8 @@ export function savePhoto(url, id) {
     return request({
         url: '/admin/system/index/savePhoto/' + id,
         method: 'post',
-        data: url
+        data: {
+            url: url
+        }
     })
 }

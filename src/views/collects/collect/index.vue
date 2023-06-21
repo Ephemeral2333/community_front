@@ -3,7 +3,7 @@
         <el-card shadow="never">
             <div slot="header" class="clearfix">
                 <el-tabs v-model="activeName" @tab-click="handleClick">
-                    <el-tab-pane label="最新主题" name="latest">
+                    <el-tab-pane label="收藏帖子" name="collect">
                         <article v-for="(item, index) in articleList" :key="index" class="media">
                             <div class="media-left">
                                 <figure class="image is-48x48">
@@ -47,21 +47,34 @@
                                           {{ "#" + tag.name }}
                                         </router-link>
                                     </span>
-                                    <span class="is-hidden-mobile">
-                                        👁️‍🗨️ {{ item.view }}
-                                        &nbsp;
-                                        👍 {{ item.favor }}
-                                    </span>
+                                    <div>
+                                        <span class="is-hidden-mobile">
+                                            👁️‍🗨️ {{ item.view }}
+                                            &nbsp;
+                                            👍 {{ item.favor }}
+                                        </span>
+                                        &nbsp;&nbsp;
+                                        <el-button
+                                            type="warning"
+                                            icon="el-icon-star-on"
+                                            size="mini"
+                                            @click="cancelCollect(item.id)"
+                                        >
+                                            {{ item.collects }}
+                                        </el-button>
+                                    </div>
                                 </nav>
                             </div>
                             <div class="media-right"/>
                         </article>
                     </el-tab-pane>
-                    <el-tab-pane label="最热主题" name="hot">
+                    <el-tab-pane label="点赞帖子" name="favor">
                         <article v-for="(item, index) in articleList" :key="index" class="media">
                             <div class="media-left">
                                 <figure class="image is-48x48">
-                                    <img :src="item.author.headUrl"
+                                    <img v-if="!item.anonymous" :src="item.author.headUrl"
+                                         style="border-radius: 5px;">
+                                    <img v-else src="https://img0.baidu.com/it/u=1758930662,2482245815&fm=253&fmt=auto&app=138&f=JPEG?w=501&h=500"
                                          style="border-radius: 5px;">
                                 </figure>
                             </div>
@@ -79,10 +92,13 @@
                                 </div>
                                 <nav class="level has-text-grey is-mobile  is-size-7 mt-2">
                                     <div class="level-left">
-                                        <router-link class="level-item"
+                                        <router-link v-if="!item.anonymous" class="level-item"
                                                      :to="{ path: `/member/${item.author.username}/home` }">
                                             {{ item.author.nickname }}
                                         </router-link>
+                                        <span v-else class="level-item">
+                                            匿名
+                                        </span>
                                         <span class="mr-1">
                                             发布于:{{ dayjs(item.createTime).format("YYYY/MM/DD") }}
                                         </span>
@@ -102,11 +118,22 @@
                                           {{ "#" + tag.name }}
                                         </router-link>
                                     </span>
-                                    <span class="is-hidden-mobile">
-                                        👁️‍🗨️ {{ item.view }}
-                                        &nbsp;
-                                        👍 {{ item.favor }}
-                                    </span>
+                                    <div>
+                                        <span class="is-hidden-mobile">
+                                            👁️‍🗨️ {{ item.view }}
+                                            &nbsp;
+                                            👍 {{ item.favor }}
+                                        </span>
+                                        &nbsp;&nbsp;
+                                        <el-button
+                                            type="danger"
+                                            icon=""
+                                            size="mini"
+                                            @click="cancelFavor(item.id)"
+                                        >
+                                            💕 {{ item.favor }}
+                                        </el-button>
+                                    </div>
                                 </nav>
                             </div>
                             <div class="media-right"/>
@@ -129,12 +156,12 @@
 
 <script>
 
-import {getPostList} from "@/api/post";
+import {collect, getMyCollect, getPostList, unFavorite} from "@/api/post";
 import dayjs from "dayjs";
 import Pagination from "@/components/Pagination";
 
 export default {
-    name: 'TopicList',
+    name: 'MyCollection',
     components: {Pagination},
     data() {
         return {
@@ -144,17 +171,19 @@ export default {
                 current: 1,
                 size: 10,
                 total: 0,
-                tab: 'latest'
+                tab: 'collect'
             },
         }
     },
     created() {
+        this.tab = "collect"
+        this.activeName = this.tab
         this.init(this.tab)
     },
     methods: {
         dayjs,
         init(tab) {
-            getPostList(this.page.current, this.page.size, tab).then((response) => {
+            getMyCollect(this.page.current, this.page.size, tab).then((response) => {
                 const {data} = response
                 this.page.current = data.currentPage
                 this.page.size = data.pageSize
@@ -175,6 +204,44 @@ export default {
         handleClick(tab) {
             this.page.current = 1
             this.init(tab.name)
+        },
+        cancelCollect(id) {
+            this.$confirm('此操作将取消收藏, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(async () => {
+                await collect(id);
+                this.$message({
+                    type: 'success',
+                    message: '取消收藏成功!'
+                });
+                window.location.reload()
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消取消收藏'
+                });
+            });
+        },
+        cancelFavor(id) {
+            this.$confirm('此操作将取消点赞, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(async () => {
+                await unFavorite(id);
+                this.$message({
+                    type: 'success',
+                    message: '取消点赞成功!'
+                });
+                window.location.reload()
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消取消点赞'
+                });
+            });
         }
     }
 }

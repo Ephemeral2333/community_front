@@ -59,6 +59,14 @@ const routes = [
     }
   },
   {
+    name: 'my-collection',
+    path: '/my/collection',
+    component: ()=>import('@/views/collects/collect/index.vue'),
+    meta: {
+        title: '我的收藏'
+    }
+  },
+  {
     name: 'search',
     path: '/search',
     component: ()=>import('@/views/Search'),

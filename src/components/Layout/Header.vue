@@ -31,6 +31,13 @@
                 >
                     📚 每日一句投稿
                 </b-navbar-item>
+                <b-navbar-item
+                    v-if="token != null && token !== ''"
+                    tag="router-link"
+                    :to="{ path: '/my/collection' }"
+                >
+                    ⭐ 我的收藏
+                </b-navbar-item>
             </template>
 
             <template slot="end">

@@ -14,8 +14,8 @@
                         </button>
                     </div>
                     <div>
-                        <p class="content">入驻：{{ dayjs(topicUser.createTime).format("YYYY/MM/DD HH:MM:ss") }}</p>
-                        <p class="content">简介：{{ topicUser.description }}</p>
+                        <p class="content">加入时间：{{ dayjs(topicUser.createTime).format("YYYY/MM/DD") }}</p>
+                        <p class="content">个人简介：{{ topicUser.description }}</p>
                     </div>
                 </el-card>
             </div>
@@ -45,9 +45,9 @@
                                         </div>
                                         <nav class="level has-text-grey is-size-7">
                                             <div class="level-left">
-                    <span class="mr-1">
-                      发布于:{{ dayjs(item.createTime).format("YYYY/MM/DD HH:mm:ss") }}
-                    </span>
+                                                <span class="mr-1">
+                                                  发布于:{{ dayjs(item.createTime).format("YYYY/MM/DD HH:mm:ss") }}
+                                                </span>
                                             </div>
                                         </nav>
                                     </div>
@@ -155,7 +155,7 @@
                 <span slot="footer" class="dialog-footer">
                             <el-button @click="dialogVisible = false">取 消</el-button>
                             <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-                        </span>
+                </span>
             </el-dialog>
         </div>
     </div>

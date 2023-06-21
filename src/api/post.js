@@ -65,3 +65,59 @@ export function removeComment(id) {
         method: 'delete'
     })
 }
+
+export function isFavorite(id) {
+    return request({
+        url: `/post/isFavor/${id}`,
+        method: 'get'
+    })
+}
+
+export function favorite(id) {
+    return request({
+        url: `/post/favor/${id}`,
+        method: 'get'
+    })
+}
+
+export function unFavorite(id) {
+    return request({
+        url: `/post/unfavor/${id}`,
+        method: 'get'
+    })
+}
+
+export function increateForward(id) {
+    return request({
+        url: `/post/increaseShareCount/${id}`,
+        method: 'get'
+    })
+}
+
+export function getMyCollect(currentPage, pageSize, tab) {
+    return request({
+        url: `/post/my/${tab}`,
+        method: 'post',
+        data: {
+            currentPage: currentPage,
+            pageSize: pageSize,
+            background: true,
+            total: 0
+        }
+    })
+}
+
+export function isCollect(id) {
+    return request({
+        url: `/post/isCollect/${id}`,
+        method: 'get'
+    })
+}
+
+export function collect(id) {
+    return request({
+        url: `/post/collect/${id}`,
+        method: 'get'
+    })
+}
+

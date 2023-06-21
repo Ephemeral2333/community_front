@@ -20,7 +20,7 @@
                     </div>
                 </div>
 
-                <div id="preview" />
+                <div id="preview"/>
 
                 <nav class="level has-text-grey is-size-7 mt-6">
                     <div class="level-left">
@@ -62,7 +62,30 @@
                 </nav>
             </el-card>
 
-            <lv-comments :slug="topic.id" />
+            <el-card
+                class="box-card"
+                shadow="never"
+            >
+                <!--点赞，收藏模块-->
+                <div class="level-right">
+                    <a class="mr-4" @click="handleFavor">
+                        <i v-if="!isFavorite" slot="icon" class="fa fa-heart"></i>
+                        <i v-else slot="icon" class="fa fa-heart" style="color: red"></i>
+                    </a>
+                    <span class="mr-5">{{ topic.favor }}</span>
+                    <a class="mr-4" @click="handleCollect">
+                        <i v-if="!isCollect" slot="icon" class="fa fa-star"></i>
+                        <i v-else slot="icon" class="fa fa-star" style="color: yellow"></i>
+                    </a>
+                    <span class="mr-5">{{ topic.collects }}</span>
+                    <a class="mr-4" @click="handleForward">
+                        <i slot="icon" class="fa fa-share-alt"></i>
+                    </a>
+                    <span>{{ topic.forward }}</span>
+                </div>
+            </el-card>
+
+            <lv-comments :slug="topic.id"/>
         </div>
 
         <div class="column">
@@ -79,7 +102,7 @@
 
 <script>
 import {mapGetters} from 'vuex'
-import {getTopic, handleDelete} from "@/api/post";
+import {favorite, getTopic, handleDelete, increateForward, isCollect, isFavorite, unFavorite, collect } from "@/api/post";
 import Vditor from "vditor";
 import Comments from "@/components/Comment/Comments.vue";
 import dayjs from "dayjs";
@@ -109,10 +132,13 @@ export default {
                 content: '',
                 id: this.$route.params.id,
                 view: 0,
-                anonymous: false
+                anonymous: false,
+                favor: 0
             },
             tags: [],
-            topicUser: {}
+            topicUser: {},
+            isFavorite: false,
+            isCollect: false,
         }
     },
     mounted() {
@@ -122,7 +148,7 @@ export default {
         dayjs,
         renderMarkdown(md) {
             Vditor.preview(document.getElementById('preview'), md, {
-                hljs: { style: 'github' }
+                hljs: {style: 'github'}
             })
         },
         // 初始化
@@ -132,13 +158,23 @@ export default {
                 document.title = data.title
                 this.topic.title = data.title
                 this.topic.content = data.content
+                this.topic.favorite = data.favor
                 this.topic.view = data.view
                 this.topic.anonymous = data.anonymous
                 this.tags = data.tags
+                this.topic = data
                 this.topicUser = data.author
                 this.renderMarkdown(this.topic.content)
                 this.flag = true
-            })
+            });
+            isFavorite(this.$route.params.id).then(response => {
+                const {data} = response
+                this.isFavorite = data
+            });
+            isCollect(this.$route.params.id).then(response => {
+                const {data} = response
+                this.isCollect = data
+            });
         },
         handleDelete(id) {
             this.$confirm('此操作将永久删除该文章, 是否继续?', '提示', {
@@ -159,6 +195,52 @@ export default {
                     message: '已取消删除'
                 })
             })
+        },
+        handleForward() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(async () => {
+                await increateForward(this.$route.params.id)
+                this.topic.forward = this.topic.forward + 1
+                this.$message({
+                    type: 'success',
+                    message: '文章链接已复制到剪切板，快去分享吧！'
+                });
+            }, () => {
+                console.error('复制链接失败');
+            });
+        },
+        async handleFavor() {
+            if (!this.isFavorite) {
+                await favorite(this.$route.params.id)
+                this.$message({
+                    type: 'success',
+                    message: '点赞成功'
+                })
+            } else {
+                await unFavorite(this.$route.params.id)
+                this.$message({
+                    type: 'success',
+                    message: '取消点赞成功'
+                })
+            }
+            this.isFavorite = !this.isFavorite
+            this.topic.favor = this.isFavorite ? this.topic.favor + 1 : this.topic.favor - 1
+        },
+        async handleCollect() {
+            await collect(this.$route.params.id)
+            if (!this.isCollect) {
+                this.$message({
+                    type: 'success',
+                    message: '收藏成功'
+                })
+            } else {
+                this.$message({
+                    type: 'success',
+                    message: '取消收藏成功'
+                })
+            }
+            this.isCollect = !this.isCollect
+            this.topic.collects = this.isCollect ? this.topic.collects + 1 : this.topic.collects - 1
         }
     }
 }
