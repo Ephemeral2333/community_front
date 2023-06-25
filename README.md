@@ -16,23 +16,23 @@
 
 ##### 首页
 
-![image](https://github.com/Ephemeral2333/community_front/assets/88269111/018d41e5-515a-4811-aa75-474935d63656)
+![image](https://github.com/Ephemeral2333/community_front/assets/88269111/e8337f2e-6829-4bcb-a60f-bf8870c5a45c)
 
 ##### 发帖页面
 
-![image](https://github.com/Ephemeral2333/community_front/assets/88269111/9b4c6b49-e871-4c12-90f5-42bcd49b4f84)
+![image](https://github.com/Ephemeral2333/community_front/assets/88269111/cf26f1a3-d887-4a0d-97ae-ea3c23ec5bc1)
 
 ##### 详情页面
 
-![image](https://github.com/Ephemeral2333/community_front/assets/88269111/b2a483c5-69bd-48bd-b125-f5f206575750)
+![image](https://github.com/Ephemeral2333/community_front/assets/88269111/8e7089cf-4c1e-45ed-8920-357866579281)
 
 ##### 我的收藏
 
-![image](https://github.com/Ephemeral2333/community_front/assets/88269111/0284a7f8-a886-42e8-b273-c2524c3416fa)
+![image](https://github.com/Ephemeral2333/community_front/assets/88269111/2a9ddd5f-5e85-4969-8c66-23366a44f236)
 
 ##### 个人主页
 
-![image](https://github.com/Ephemeral2333/community_front/assets/88269111/f7d7f9fa-7675-4dd3-9faa-3ad713984f91)
+![image](https://github.com/Ephemeral2333/community_front/assets/88269111/f3230c47-c23b-4ba9-9da4-619a2336da42)
 
 #### 运行方法
 
