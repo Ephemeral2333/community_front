@@ -168,8 +168,12 @@ export default {
         sendCode(formName) {
             const {email} = this.ruleForm
             sendCode(email).then(response => {
-                const {code} = response;
+                const {code, data} = response;
                 if (code === 200) {
+                    if(data === "该邮箱已被注册") {
+                        this.$message.error('该邮箱已被注册');
+                        return;
+                    }
                     this.isShow = false;
                     this.count = 3; //赋值3秒
                     var times = setInterval(() => {

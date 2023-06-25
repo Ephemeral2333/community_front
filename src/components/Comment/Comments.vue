@@ -4,6 +4,8 @@
         <h3 class="title is-5">评论</h3>
         <lv-comments-form :slug="slug" v-if="token" @loadComments="fetchComments"/>
 
+        <span v-if="comments.length === 0">暂无评论</span>
+
         <lv-comments-item
             v-for="comment in comments"
             :key="`comment-${comment.id}`"

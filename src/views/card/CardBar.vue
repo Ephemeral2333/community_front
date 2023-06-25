@@ -2,7 +2,6 @@
     <div>
         <login-welcome/>
         <tip-card/>
-        <promotion-card/>
     </div>
 </template>
 

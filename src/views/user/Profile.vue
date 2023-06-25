@@ -16,6 +16,7 @@
                     <div>
                         <p class="content">加入时间：{{ dayjs(topicUser.createTime).format("YYYY/MM/DD") }}</p>
                         <p class="content">个人简介：{{ topicUser.description }}</p>
+                        <p class="content">邮箱： {{ topicUser.email }}</p>
                     </div>
                 </el-card>
             </div>

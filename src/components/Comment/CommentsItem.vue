@@ -9,7 +9,7 @@
                 <p>
                     <strong>{{ comment.username }}</strong>
                     <small class="ml-2">{{ comment.createTime | date }}</small>
-                    <br/>
+                    <br />
                     {{ comment.content }}
                     <br>
                     <a @click="like(comment.id)">
@@ -57,26 +57,26 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import { mapGetters } from "vuex";
 import LvCommentsForm from "@/components/Comment/CommentsForm.vue";
-import VueStar from 'vue-star'
-import {favorComment} from "@/api/comments";
-import {removeComment, replyComments} from "@/api/post";
+import VueStar from "vue-star";
+import { favorComment } from "@/api/comments";
+import { removeComment, replyComments } from "@/api/post";
 
 export default {
-    name: 'LvCommentsItem',
-    components: {LvCommentsForm, VueStar},
+    name: "LvCommentsItem",
+    components: { LvCommentsForm, VueStar },
     data() {
         return {
-            commentText: ''
-        }
+            commentText: ""
+        };
     },
     mounted() {
-        console.log(this.comment.content + " " + this.comment.favorite)
+        console.log(this.comment.content + " " + this.comment.favorite);
     },
     computed: {
         ...mapGetters([
-            'token', 'user'
+            "token", "user"
         ])
     },
     props: {
@@ -95,64 +95,68 @@ export default {
     },
     methods: {
         replyComment(id) {
-            if (this.token === null || this.token === '') {
-                console.log(this.token)
-                this.$message.warning('要先登录才能回复哦')
+            if (this.token === null || this.token === "") {
+                console.log(this.token);
+                this.$message.warning("要先登录才能回复哦");
             } else {
                 // id为comments-form+comment.id的div取消隐藏
-                document.getElementById('comments-form' + id).hidden = false
+                document.getElementById("comments-form" + id).hidden = false;
             }
         },
         resetForm(id) {
             // id为comments-form+comment.id的div隐藏
-            document.getElementById('comments-form' + id).hidden = true
+            document.getElementById("comments-form" + id).hidden = true;
         },
         async reply() {
+            if (this.commentText === "") {
+                this.$message.warning("回复内容不能为空");
+                return;
+            }
             // 调用api，然后根据返回结果进行相应的操作
-            let postData = {}
-            postData['id'] = this.comment.id
-            postData['content'] = this.commentText
-            postData['topicId'] = this.topicId
-            await replyComments(postData)
-            this.$message.success('回复成功')
+            let postData = {};
+            postData["id"] = this.comment.id;
+            postData["content"] = this.commentText;
+            postData["topicId"] = this.topicId;
+            await replyComments(postData);
+            this.$message.success("回复成功");
             // 重新加载页面
-            window.location.reload()
+            window.location.reload();
         },
         removeComment(id) {
             // 询问是否删除
-            this.$confirm('此操作将永久删除该评论, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
+            this.$confirm("此操作将永久删除该评论, 是否继续?", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
             }).then(async () => {
                 // 调用api，然后根据返回结果进行相应的操作
-                await removeComment(id)
-                this.$message.success('删除成功')
+                await removeComment(id);
+                this.$message.success("删除成功");
                 // 重新加载页面
-                window.location.reload()
+                window.location.reload();
             }).catch(() => {
-                this.$message.info('已取消删除')
-            })
+                this.$message.info("已取消删除");
+            });
         },
         async like(id) {
             // 如果是点赞，就点赞数加一，然后将comment.favorite设置为true
-            if (!this.token || this.token === '') {
-                this.$message.warning('要先登录才能点赞哦')
+            if (!this.token || this.token === "") {
+                this.$message.warning("要先登录才能点赞哦");
             } else {
                 if (this.comment.favorite) {
-                    this.comment.favor -= 1
-                    this.comment.favorite = false
-                    this.$message.success('取消点赞成功')
+                    this.comment.favor -= 1;
+                    this.comment.favorite = false;
+                    this.$message.success("取消点赞成功");
                 } else {
-                    this.comment.favor += 1
-                    this.comment.favorite = true
-                    this.$message.success('点赞成功')
+                    this.comment.favor += 1;
+                    this.comment.favorite = true;
+                    this.$message.success("点赞成功");
                 }
                 await favorComment(this.comment.id);
             }
-        },
+        }
     }
-}
+};
 </script>
 
 

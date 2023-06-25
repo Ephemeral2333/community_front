@@ -68,7 +68,7 @@ export function removeComment(id) {
 
 export function isFavorite(id) {
     return request({
-        url: `/post/isFavor/${id}`,
+        url: `/front/post/isFavor/${id}`,
         method: 'get'
     })
 }
@@ -89,7 +89,7 @@ export function unFavorite(id) {
 
 export function increateForward(id) {
     return request({
-        url: `/post/increaseShareCount/${id}`,
+        url: `/front/post/increaseShareCount/${id}`,
         method: 'get'
     })
 }
@@ -109,7 +109,7 @@ export function getMyCollect(currentPage, pageSize, tab) {
 
 export function isCollect(id) {
     return request({
-        url: `/post/isCollect/${id}`,
+        url: `/front/post/isCollect/${id}`,
         method: 'get'
     })
 }

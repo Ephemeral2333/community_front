@@ -21,6 +21,8 @@
                                                 <span class="is-size-6">{{ item.title }}</span>
                                                 &nbsp;
                                                 <span v-if="item.top" class="tag is-danger is-light">置顶</span>
+                                                &nbsp;
+                                                <span v-if="item.essence" class="tag is-warning is-light">精华</span>
                                             </router-link>
                                         </el-tooltip>
                                     </p>
@@ -51,6 +53,8 @@
                                         👁️‍🗨️ {{ item.view }}
                                         &nbsp;
                                         👍 {{ item.favor }}
+                                        &nbsp;
+                                        💭 {{ item.comments }}
                                     </span>
                                 </nav>
                             </div>
@@ -73,6 +77,8 @@
                                                 <span class="is-size-6">{{ item.title }}</span>
                                                 &nbsp;
                                                 <span v-if="item.top" class="tag is-danger is-light">置顶</span>
+                                                &nbsp;
+                                                <span v-if="item.essence" class="tag is-warning is-light">精华</span>
                                             </router-link>
                                         </el-tooltip>
                                     </p>
@@ -106,6 +112,8 @@
                                         👁️‍🗨️ {{ item.view }}
                                         &nbsp;
                                         👍 {{ item.favor }}
+                                        &nbsp;
+                                        💭 {{ item.comments }}
                                     </span>
                                 </nav>
                             </div>

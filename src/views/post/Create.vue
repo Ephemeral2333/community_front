@@ -154,10 +154,10 @@ export default {
                         alert('话题内容不可为空')
                         return false
                     }
-                    if (this.ruleForm.tags == null || this.ruleForm.tags.length === 0) {
-                        alert('标签不可以为空')
-                        return false
-                    }
+                    // if (this.ruleForm.tags == null || this.ruleForm.tags.length === 0) {
+                    //     alert('标签不可以为空')
+                    //     return false
+                    // }
                     this.ruleForm.content = this.contentEditor.getValue()
                     savePost(this.ruleForm).then((response) => {
                         const { data } = response

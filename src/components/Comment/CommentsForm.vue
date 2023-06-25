@@ -29,14 +29,15 @@
 </template>
 
 <script>
-import {pushComment} from '@/api/comments'
+import { pushComment } from "@/api/comments";
+
 export default {
-    name: 'LvCommentsForm',
+    name: "LvCommentsForm",
     data() {
         return {
-            commentText: '',
+            commentText: "",
             isLoading: false
-        }
+        };
     },
     props: {
         slug: {
@@ -46,33 +47,37 @@ export default {
     },
     methods: {
         async onSubmit() {
-            this.isLoading = true
+            if (!this.commentText) {
+                this.$message.warning("请输入留言内容");
+                return;
+            }
+            this.isLoading = true;
             try {
-                let postData = {}
-                console.log(this.commentText)
-                postData['id'] = null
-                postData['content'] = this.commentText
-                postData['topicId'] = this.slug
+                let postData = {};
+                console.log(this.commentText);
+                postData["id"] = null;
+                postData["content"] = this.commentText;
+                postData["topicId"] = this.slug;
                 // 调用api，然后根据返回结果进行相应的操作
                 await pushComment(postData).then(res => {
                     const { code } = res;
                     if (code !== 200) {
-                        this.$message.error('留言失败,请先登录')
+                        this.$message.error("留言失败,请先登录");
                     }
-                })
-                this.$emit('loadComments', this.slug)
-                this.$message.success('留言成功')
-                this.commentText = ''
-                window.location.reload()
+                });
+                this.$emit("loadComments", this.slug);
+                this.$message.success("留言成功");
+                this.commentText = "";
+                window.location.reload();
             } catch (e) {
                 this.$buefy.toast.open({
                     message: `Cannot comment this story. ${e}`,
-                    type: 'is-danger'
-                })
+                    type: "is-danger"
+                });
             } finally {
-                this.isLoading = false
+                this.isLoading = false;
             }
         }
     }
-}
+};
 </script>
